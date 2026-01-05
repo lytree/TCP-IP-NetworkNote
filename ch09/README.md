@@ -160,7 +160,7 @@ Output buffer size: 6144
 
 观察以下过程：
 
-![](https://i.loli.net/2019/01/19/5c42db182cade.png)
+![](images/5c42db182cade.png)
 
 假设图中主机 A 是服务器，因为是主机 A 向 B 发送 FIN 消息，故可想象成服务器端在控制台中输入 CTRL+C 。但是问题是，套接字经过四次握手后并没有立即消除，而是要经过一段时间的 Time-wait 状态。当然，只有先断开连接的（先发送 FIN 消息的）主机才经过 Time-wait 状态。因此，若服务器端先断开连接，则无法立即重新运行。套接字处在 Time-wait 过程时，相应端口是正在使用的状态。因此，就像之前验证过的，bind 函数调用过程中会发生错误。
 
@@ -172,7 +172,7 @@ Output buffer size: 6144
 
 Time-wait 状态看似重要，但是不一定讨人喜欢。如果系统发生故障紧急停止，这时需要尽快重启服务器以提供服务，但因处于 Time-wait 状态而必须等待几分钟。因此，Time-wait 并非只有优点，这些情况下容易引发大问题。下图中展示了四次握手时不得不延长 Time-wait 过程的情况。
 
-![](https://i.loli.net/2019/01/19/5c42dec2ba42b.png)
+![](images/5c42dec2ba42b.png)
 
 从图上可以看出，在主机 A 四次握手的过程中，如果最后的数据丢失，则主机 B 会认为主机 A 未能收到自己发送的 FIN 信息，因此重传。这时，收到的 FIN 消息的主机 A 将重启  Time-wait 计时器。因此，如果网络状况不理想， Time-wait 将持续。
 
@@ -192,7 +192,7 @@ setsockopt(serv_sock, SOL_SOCKET, SO_REUSEADDR, (void *)&option, optlen);
 
 为了防止因数据包过多而发生网络过载，`Nagle` 算法诞生了。它应用于 TCP 层。它是否使用会导致如图所示的差异：
 
-![](https://i.loli.net/2019/01/19/5c42e12abc5b8.png)
+![](images/5c42e12abc5b8.png)
 
 图中展示了通过 `Nagle` 算法发送字符串 `Nagle` 和未使用 `Nagle` 算法的差别。可以得到一个结论。
 

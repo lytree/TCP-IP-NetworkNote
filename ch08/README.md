@@ -14,7 +14,7 @@ DNS 是对IP地址和域名进行相互转换的系统，其核心是 DNS 服务
 
 相当于一个字典，可以查询出某一个域名对应的IP地址
 
-![](https://i.loli.net/2019/01/18/5c41854859ae3.png)
+![](images/5c41854859ae3.png)
 
 如图所示，显示了 DNS 服务器的查询路径。
 
@@ -59,7 +59,7 @@ struct hostent
 
 调用 gethostbyname 函数后，返回的结构体变量如图所示：
 
-![](https://i.loli.net/2019/01/18/5c41898ae45e8.png)
+![](images/5c41898ae45e8.png)
 
 下面的代码通过一个例子来演示 gethostbyname 的应用，并说明 hostent 结构体变量特性。
 
@@ -74,7 +74,7 @@ gcc gethostbyname.c -o hostname
 
 结果：
 
-![](https://i.loli.net/2019/01/18/5c418faf20495.png)
+![](images/5c418faf20495.png)
 
 如图所示，显示出了对百度的域名解析
 
@@ -98,7 +98,7 @@ inet_ntoa(*(struct in_addr *)host->h_addr_list[i])
 
 若只看 hostent 的定义，结构体成员 h_addr_list 指向字符串指针数组（由多个字符串地址构成的数组）。但是字符串指针数组保存的元素实际指向的是 in_addr 结构体变量中地址值而非字符串，也就是说`(struct in_addr *)host->h_addr_list[i]`其实是一个指针，然后用`*`符号取具体的值。如图所示：
 
-![](https://i.loli.net/2019/01/18/5c419658a73b8.png)
+![](images/5c419658a73b8.png)
 
 #### 8.2.3 利用IP地址获取域名
 
@@ -128,7 +128,7 @@ gcc gethostbyaddr.c -o hostaddr
 
 结果：
 
-![](https://i.loli.net/2019/01/18/5c41a019085d4.png)
+![](images/5c41a019085d4.png)
 
 从图上可以看出，`8.8.8.8`这个IP地址是谷歌的。
 
@@ -151,7 +151,7 @@ gcc gethostbyaddr.c -o hostaddr
 
 2. **阅读如下对话，并说明东秀的方案是否可行。（因为对话的字太多，用图代替）**
 
-   ![](https://i.loli.net/2019/01/18/5c41a22f35390.png)
+   ![](images/5c41a22f35390.png)
 
    答：东秀的方案是可行的。DNS 服务器采用分布式层次结构，具有冗余性和容错性。当一台 DNS 服务器故障时，可以自动切换到其他可用的 DNS 服务器进行查询，不会导致整个域名解析系统瘫痪。此外，DNS 解析结果通常会在本地缓存一段时间，即使 DNS 服务器暂时不可用，已缓存的解析记录仍然可以正常使用。
 
