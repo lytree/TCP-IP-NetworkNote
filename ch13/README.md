@@ -6,7 +6,7 @@
 
 #### 13.1.1 Linux 中的 send & recv
 
-首先看 sned 函数定义：
+首先看 send 函数定义：
 
 ```c
 #include <sys/socket.h>
@@ -27,8 +27,8 @@ flags: 传输数据时指定的可选项信息
 ssize_t recv(int sockfd, void *buf, size_t nbytes, int flags);
 /*
 成功时返回接收的字节数（收到 EOF 返回 0），失败时返回 -1
-sockfd: 表示数据接受对象的连接的套接字文件描述符
-buf: 保存接受数据的缓冲地址值
+sockfd: 表示数据接收对象的连接的套接字文件描述符
+buf: 保存接收数据的缓冲地址值
 nbytes: 可接收的最大字节数
 flags: 接收数据时指定的可选项参数
 */
@@ -41,7 +41,7 @@ send & recv 函数的可选项意义：
 | 可选项（Option） | 含义                                                         | send | recv |
 | ---------------- | ------------------------------------------------------------ | ---- | ---- |
 | MSG_OOB          | 用于传输带外数据（Out-of-band data）                         | O    | O    |
-| MSG_PEEK         | 验证输入缓冲中是否存在接受的数据                             | X    | O    |
+| MSG_PEEK         | 验证输入缓冲中是否存在接收的数据                             | X    | O    |
 | MSG_DONTROUTE    | 数据传输过程中不参照本地路由（Routing）表，在本地（Local）网络中寻找目的地 | O    | X    |
 | MSG_DONTWAIT     | 调用 I/O 函数时不阻塞，用于使用非阻塞（Non-blocking）I/O     | O    | O    |
 | MSG_WAITALL      | 防止函数返回，直到接收到全部请求的字节数                     | X    | O    |
@@ -121,14 +121,14 @@ TCP 数据包实际包含更多信息。TCP 头部包含如下两种信息：
 
 #### 13.1.4 检查输入缓冲
 
-同时设置 MSG_PEEK 选项和 MSG_DONTWAIT 选项，以验证输入缓冲是否存在接收的数据。设置 MSG_PEEK 选项并调用 recv 函数时，即使读取了输入缓冲的数据也不会删除。因此，该选项通常与 MSG_DONTWAIT 合作，用于以非阻塞方式验证待读数据存在与否。下面的示例是二者的含义：
+同时设置 MSG_PEEK 选项和 MSG_DONTWAIT 选项，以验证输入缓冲是否存在接收的数据。设置 MSG_PEEK 选项并调用 recv 函数时，即使读取了输入缓冲的数据也不会删除。因此，该选项通常与 MSG_DONTWAIT 配合，用于以非阻塞方式验证待读数据存在与否。下面的示例是二者的含义：
 
 - [peek_recv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/peek_recv.c)
 - [peek_send.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/peek_send.c)
 
 编译运行：
 
-```
+```shell
 gcc peek_recv.c -o recv
 gcc peek_send.c -o send
 ./recv 9190
@@ -156,7 +156,7 @@ readv & writev 函数的功能可概括如下：
 ssize_t writev(int filedes, const struct iovec *iov, int iovcnt);
 /*
 成功时返回发送的字节数，失败时返回 -1
-filedes: 表示数据传输对象的套接字文件描述符。但该函数并不仅限于套接字，因此，可以像 read 一样向向其传递文件或标准输出描述符.
+filedes: 表示数据传输对象的套接字文件描述符。但该函数并不仅限于套接字，因此，可以像 read 一样向其传递文件或标准输出描述符.
 iov: iovec 结构体数组的地址值，结构体 iovec 中包含待发送数据的位置和大小信息
 iovcnt: 向第二个参数传递数组长度
 */
@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
 
 ```shell
 gcc writev.c -o writev
-./writevi
+./writev
 ```
 
 结果：
@@ -222,10 +222,10 @@ Write bytes: 7
 
 ```c
 #include <sys/uio.h>
-ssize_t readv(int filedes, const struct iovc *iov, int iovcnt);
+ssize_t readv(int filedes, const struct iovec *iov, int iovcnt);
 /*
 成功时返回接收的字节数，失败时返回 -1
-filedes: 表示数据传输对象的套接字文件描述符。但该函数并不仅限于套接字，因此，可以像 write 一样向向其传递文件或标准输出描述符.
+filedes: 表示数据传输对象的套接字文件描述符。但该函数并不仅限于套接字，因此，可以像 write 一样向其传递文件或标准输出描述符.
 iov: iovec 结构体数组的地址值，结构体 iovec 中包含待数据保存的位置和大小信息
 iovcnt: 第二个参数中数组的长度
 */
@@ -288,12 +288,63 @@ gcc readv.c -o rv
 
 ### 13.3 基于 Windows 的实现
 
-暂略
+Windows 下的 Winsock 提供了与 Linux 类似的 I/O 函数，主要有以下区别：
+
+#### 13.3.1 send 和 recv 函数
+
+Winsock 中的 send 和 recv 函数原型与 Linux 基本一致：
+
+```c
+#include <winsock2.h>
+int send(SOCKET s, const char *buf, int len, int flags);
+int recv(SOCKET s, char *buf, int len, int flags);
+```
+
+主要区别：
+- 参数类型：Linux 使用 `int sockfd`，Windows 使用 `SOCKET s`（实际是 `typedef UINT_PTR SOCKET;`）
+- 缓冲区类型：Linux 使用 `void *`，Windows 使用 `char *`
+- 返回值：Linux 返回 `ssize_t`，Windows 返回 `int`（失败时返回 `SOCKET_ERROR`，即 -1）
+
+#### 13.3.2 WSASend、WSARecv 和 WSARecvEx
+
+Windows 还提供了扩展版本的异步 I/O 函数：
+
+```c
+int WSASend(SOCKET s, LPWSABUF lpBuffers, DWORD dwBufferCount,
+            LPDWORD lpNumberOfBytesSent, DWORD dwFlags,
+            LPWSAOVERLAPPED lpOverlapped,
+            LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+
+int WSARecv(SOCKET s, LPWSABUF lpBuffers, DWORD dwBufferCount,
+            LPDWORD lpNumberOfBytesRecvd, LPDWORD lpFlags,
+            LPWSAOVERLAPPED lpOverlapped,
+            LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+```
+
+这些函数支持重叠 I/O（Overlapped I/O）和完成端口（Completion Port）模型，适合高性能服务器开发。
+
+#### 13.3.3 可选项差异
+
+Windows 与 Linux 在可选项上存在一些差异：
+
+| 可选项 | Linux | Windows |
+| ------ | ----- | ------- |
+| MSG_OOB | 支持 | 支持 |
+| MSG_PEEK | 支持 | 支持 |
+| MSG_DONTWAIT | 支持 | 不支持（需通过 ioctlsocket 设置非阻塞模式） |
+| MSG_WAITALL | 支持 | 支持 |
+| MSG_PARTIAL | 不支持 | 支持（仅用于流式套接字） |
+
+Windows 不支持 MSG_DONTWAIT，需要通过 `ioctlsocket` 函数设置套接字为非阻塞模式：
+
+```c
+u_long mode = 1;
+ioctlsocket(sock, FIONBIO, &mode);
+```
 
 ### 13.4 习题
 
 > 以下答案仅代表本人个人观点，可能不是正确答案。
->
 
 1. **下列关于 MSG_OOB 可选项的说法错误的是**？
 
@@ -308,6 +359,25 @@ gcc readv.c -o rv
 
    答：需要传输的数据分别位于不同缓冲（数组）时，需要多次调用 write 函数。此时可通过 1 次 writev 函数调用替代操作，当然会提高效率。同样，需要将输入缓冲中的数据读入不同位置时，可以不必多次调用 read 函数，而是利用 1 次 readv 函数就能大大提高效率。
 
+   从 I/O 缓冲的角度来看，writev 函数可以将分散的数据整合为一次系统调用，减少用户态与内核态之间的上下文切换次数，同时减少网络数据包的个数（尤其在禁用 Nagle 算法时效果更明显）。
+
 3. **通过 recv 函数验证输入缓冲中是否存在数据时（确认后立即返回时），如何设置 recv 函数最后一个参数中的可选项？分别说明各可选项的含义**。
 
-   答：使用 MSG_PEEK 来验证输入缓冲中是否存在待接收的数据。各个可选项的意义参见上面对应章节的表格。
+   答：应同时设置 `MSG_PEEK` 和 `MSG_DONTWAIT` 两个可选项。
+
+   各可选项的含义：
+
+   - **MSG_PEEK**：验证输入缓冲中是否存在待接收的数据。设置此选项后，recv 函数会读取输入缓冲中的数据但不会将其删除（数据仍保留在缓冲中），可以再次读取。
+   - **MSG_DONTWAIT**：调用 I/O 函数时不阻塞，用于非阻塞（Non-blocking）I/O。设置此选项后，如果输入缓冲中没有数据，recv 函数会立即返回错误（errno 设为 EAGAIN 或 EWOULDBLOCK），而不是阻塞等待。
+
+   示例代码：
+   ```c
+   int len = recv(sockfd, buf, sizeof(buf), MSG_PEEK | MSG_DONTWAIT);
+   if (len > 0) {
+       // 缓冲中有数据
+   } else if (len == 0) {
+       // 连接已关闭
+   } else {
+       // 无数据或出错
+   }
+   ```

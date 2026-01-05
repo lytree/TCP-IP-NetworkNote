@@ -1,6 +1,6 @@
 ## 第一章：理解网络编程和套接字
 
-本章代码，在[TCP-IP-NetworkNote](https://github.com/riba2534/TCP-IP-NetworkNote)中可以找到，直接点连接可能进不去。
+本章代码，在[TCP-IP-NetworkNote](https://github.com/riba2534/TCP-IP-NetworkNote)中可以找到，直接点链接可能进不去。
 
 ### 1.1 理解网络编程和套接字
 
@@ -28,7 +28,7 @@ int socket(int domain, int type, int protocol);
 >
 > 答：我的电话号码是123-1234
 
-套接字同样如此。就想给电话机分配电话号码一样，利用以下函数给创建好的套接字分配地址信息（IP地址和端口号）：
+套接字同样如此。就像给电话机分配电话号码一样，利用以下函数给创建好的套接字分配地址信息（IP地址和端口号）：
 
 ```c
 #include <sys/socket.h>
@@ -79,7 +79,7 @@ int accept(int sockfd,struct sockaddr *addr,socklen_t *addrlen);
 
 服务器端（server）是能够受理连接请求的程序。下面构建服务端以验证之前提到的函数调用过程，该服务器端收到连接请求后向请求者返回`Hello World!`答复。除各种函数的调用顺序外，我们还未涉及任何实际编程。因此，阅读代码时请重点关注套接字相关的函数调用过程，不必理解全过程。
 
-服务器端代码请参见：[hello_server.c](ch01/hello_server.c)
+服务器端代码请参见：[hello_server.c](hello_server.c)
 
 **客户端**：
 
@@ -88,7 +88,7 @@ int accept(int sockfd,struct sockaddr *addr,socklen_t *addrlen);
 1. 调用 socket 函数 和 connect 函数
 2. 与服务端共同运行以收发字符串数据
 
-客户端代码请参见：[hello_client.c](ch01/hello_client.c)
+客户端代码请参见：[hello_client.c](hello_client.c)
 
 **编译**：
 
@@ -106,7 +106,7 @@ gcc hello_client.c -o hclient
 ./hclient 127.0.0.1 9190
 ```
 
-运行的时候，首先再 9190 端口启动服务，然后 heserver 就会一直等待客户端进行响应，当客户端监听位于本地的 IP 为 127.0.0.1 的地址的9190端口时，客户端就会收到服务端的回应，输出`Hello World!`
+运行的时候，首先在 9190 端口启动服务，然后 hserver 就会一直等待客户端进行连接，当客户端连接位于本地的 IP 为 127.0.0.1 的地址的 9190 端口时，客户端就会收到服务端的回应，输出`Hello World!`
 
 ### 1.2 基于 Linux 的文件操作
 
@@ -124,7 +124,7 @@ gcc hello_client.c -o hclient
 
 文件和套接字一般经过创建过程才会被分配文件描述符。
 
-文件描述符也被称为「文件句柄」，但是「句柄」主要是 Windows 中的术语。因此，在本书中如果设计 Windows 平台将使用「句柄」，如果是 Linux 将使用「描述符」。
+文件描述符也被称为「文件句柄」，但是「句柄」主要是 Windows 中的术语。因此，在本书中如果涉及 Windows 平台将使用「句柄」，如果是 Linux 将使用「描述符」。
 
 #### 1.2.2 打开文件:
 
@@ -162,7 +162,7 @@ fd : 需要关闭的文件或套接字的文件描述符
 */
 ```
 
-若调用此函数同时传递文件描述符参数，则关闭（终止）响应文件。另外需要注意的是，此函数不仅可以关闭文件，还可以关闭套接字。再次证明了「Linux 操作系统不区分文件与套接字」的特点。
+若调用此函数同时传递文件描述符参数，则关闭（终止）相应文件。另外需要注意的是，此函数不仅可以关闭文件，还可以关闭套接字。再次证明了「Linux 操作系统不区分文件与套接字」的特点。
 
 #### 1.2.4 将数据写入文件：
 
@@ -177,11 +177,11 @@ nbytes : 要传输数据的字节数
 */
 ```
 
-在此函数的定义中，size_t 是通过 typedef 声明的 unsigned int 类型。对 ssize_t 来说，ssize_t 前面多加的 s 代表 signed ，即 ssize_t 是通过 typedef 声明的 signed int 类型。
+在此函数的定义中，size_t 是通过 typedef 声明的无符号整型（通常为 `unsigned long`）。对 ssize_t 来说，ssize_t 前面多加的 s 代表 signed（有符号），即 ssize_t 是通过 typedef 声明的有符号整型（通常为 `signed long`）。
 
 创建新文件并保存数据：
 
-代码见：[low_open.c](ch01/low_open.c)
+代码见：[low_open.c](low_open.c)
 
 编译运行：
 
@@ -209,7 +209,7 @@ nbytes : 要接收数据的最大字节数
 
 下面示例通过 read() 函数读取 data.txt 中保存的数据。
 
-代码见：[low_read.c](ch01/low_read.c)
+代码见：[low_read.c](low_read.c)
 
 编译运行：
 
@@ -218,7 +218,7 @@ gcc low_read.c -o lread
 ./lread
 ```
 
-在上一步的 data.txt 文件与没有删的情况下，会输出：
+在上一步的 data.txt 文件如果没有删的情况下，会输出：
 
 ```
 file descriptor: 3
@@ -231,7 +231,7 @@ file data: Let's go!
 
 下面将同时创建文件和套接字，并用整数型态比较返回的文件描述符的值.
 
-代码见：[fd_seri.c](ch01/fd_seri.c)
+代码见：[fd_seri.c](fd_seri.c)
 
 **编译运行**：
 
@@ -270,7 +270,7 @@ file descriptor 3: 16
 
 3. Linux 中，对套接字数据进行 I/O 时可以直接使用文件 I/O 相关函数；而在 Windows 中则不可以。原因为何？
 
-   > 答：暂略。
+   > 答：在 Linux 中，套接字（socket）被视为文件的一种，遵循「一切皆文件」的设计哲学。因此可以使用标准的文件 I/O 函数（如 `read`、`write`、`close`）对套接字进行操作。而在 Windows 中，套接字和文件是区分开的，套接字操作需要使用专门的 Winsock 函数（如 `send`、`recv`、`closesocket`），不能使用文件 I/O 函数（如 `ReadFile`、`WriteFile`）直接操作套接字。
 
 4. 创建套接字后一般会给他分配地址，为什么？为了完成地址分配需要调用哪个函数？
 
@@ -278,7 +278,7 @@ file descriptor 3: 16
 
 5.  Linux 中的文件描述符与 Windows 的句柄实际上非常类似。请以套接字为对象说明它们的含义。
 
-   > 答：暂略。
+   > 答：文件描述符（File Descriptor）是 Linux 内核为了高效管理已被打开的文件所创建的索引，用于标识打开的文件、套接字等 I/O 资源，是一个非负整数。句柄（Handle）是 Windows 中用于标识资源（如文件、套接字、窗口等）的抽象引用，本质上是一个指针或索引。两者的相似之处在于：它们都是操作系统用来标识和访问资源的标识符；区别在于：Linux 的文件描述符是整数值，且遵循「一切皆文件」原则，套接字可以使用文件 I/O 函数操作；而 Windows 的句柄是 opaque 类型（不透明的指针类型），且需要针对不同资源类型使用专门的 API 函数。
 
 6. 底层 I/O 函数与 ANSI 标准定义的文件 I/O 函数有何区别？
 
@@ -286,4 +286,101 @@ file descriptor 3: 16
 
 7. 参考本书给出的示例`low_open.c`和`low_read.c`，分别利用底层文件 I/O 和 ANSI 标准 I/O 编写文件复制程序。可任意指定复制程序的使用方法。
 
-   > 答：暂略。
+   > 答：
+   >
+   > **使用底层文件 I/O（Linux 系统调用）的文件复制程序：**
+   >
+   > ```c
+   > #include <stdio.h>
+   > #include <stdlib.h>
+   > #include <unistd.h>
+   > #include <fcntl.h>
+   > #include <sys/stat.h>
+   >
+   > #define BUF_SIZE 4096
+   >
+   > int main(int argc, char *argv[]) {
+   >     if (argc != 3) {
+   >         printf("Usage: %s <src_file> <dest_file>\n", argv[0]);
+   >         exit(1);
+   >     }
+   >
+   >     int src_fd = open(argv[1], O_RDONLY);
+   >     if (src_fd == -1) {
+   >         perror("open source file failed");
+   >         exit(1);
+   >     }
+   >
+   >     int dest_fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+   >     if (dest_fd == -1) {
+   >         perror("open dest file failed");
+   >         close(src_fd);
+   >         exit(1);
+   >     }
+   >
+   >     char buf[BUF_SIZE];
+   >     ssize_t read_cnt;
+   >
+   >     while ((read_cnt = read(src_fd, buf, BUF_SIZE)) > 0) {
+   >         write(dest_fd, buf, read_cnt);
+   >     }
+   >
+   >     close(src_fd);
+   >     close(dest_fd);
+   >
+   >     return 0;
+   > }
+   > ```
+   >
+   > **使用 ANSI 标准 I/O（标准 C 库）的文件复制程序：**
+   >
+   > ```c
+   > #include <stdio.h>
+   > #include <stdlib.h>
+   >
+   > #define BUF_SIZE 4096
+   >
+   > int main(int argc, char *argv[]) {
+   >     if (argc != 3) {
+   >         printf("Usage: %s <src_file> <dest_file>\n", argv[0]);
+   >         exit(1);
+   >     }
+   >
+   >     FILE *src_fp = fopen(argv[1], "rb");
+   >     if (src_fp == NULL) {
+   >         perror("fopen source file failed");
+   >         exit(1);
+   >     }
+   >
+   >     FILE *dest_fp = fopen(argv[2], "wb");
+   >     if (dest_fp == NULL) {
+   >         perror("fopen dest file failed");
+   >         fclose(src_fp);
+   >         exit(1);
+   >     }
+   >
+   >     char buf[BUF_SIZE];
+   >     size_t read_cnt;
+   >
+   >     while ((read_cnt = fread(buf, 1, BUF_SIZE, src_fp)) > 0) {
+   >         fwrite(buf, 1, read_cnt, dest_fp);
+   >     }
+   >
+   >     fclose(src_fp);
+   >     fclose(dest_fp);
+   >
+   >     return 0;
+   > }
+   > ```
+   >
+   > **编译运行示例：**
+   >
+   > ```shell
+   > # 底层 I/O 版本
+   > gcc file_copy_low.c -o fcopy_low
+   > ./fcopy_low source.txt dest.txt
+   >
+   > # 标准 I/O 版本
+   > gcc file_copy_stdio.c -o fcopy_stdio
+   > ./fcopy_stdio source.txt dest.txt
+   > ```

@@ -28,13 +28,13 @@ protocol: 计算机间通信中使用的协议信息
 
 | 名称      | 协议族               |
 | --------- | -------------------- |
-| PF_INET   | IPV4 互联网协议族    |
-| PF_INET6  | IPV6 互联网协议族    |
+| PF_INET   | IPv4 互联网协议族    |
+| PF_INET6  | IPv6 互联网协议族    |
 | PF_LOCAL  | 本地通信 Unix 协议族 |
 | PF_PACKET | 底层套接字的协议族   |
-| PF_IPX    | IPX Novel 协议族     |
+| PF_IPX    | IPX Novell 协议族    |
 
-本书着重讲 PF_INET 对应的 IPV4 互联网协议族。其他协议并不常用，或并未普及。**另外，套接字中采用的最终的协议信息是通过 socket 函数的第三个参数传递的。在指定的协议族范围内通过第一个参数决定第三个参数。**
+本书着重讲 PF_INET 对应的 IPv4 互联网协议族。其他协议并不常用，或并未普及。**另外，套接字中采用的最终的协议信息是通过 socket 函数的第三个参数传递的。在指定的协议族范围内通过第一个参数决定第三个参数。**
 
 #### 2.1.3 套接字类型（Type）
 
@@ -83,7 +83,7 @@ socket 函数的第三个参数决定最终采用的协议。前面已经通过�
 
 > 可以应对同一协议族中存在的多个数据传输方式相同的协议，所以数据传输方式相同，但是协议不同，需要用第三个参数指定具体的协议信息。
 
-本书用的是 Ipv4 的协议族，和面向连接的数据传输，满足这两个条件的协议只有 IPPROTO_TCP ，因此可以如下调用 socket 函数创建套接字，这种套接字称为 TCP 套接字。
+本书用的是 IPv4 的协议族，和面向连接的数据传输，满足这两个条件的协议只有 IPPROTO_TCP ，因此可以如下调用 socket 函数创建套接字，这种套接字称为 TCP 套接字。
 
 ```c
 int tcp_socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -127,7 +127,99 @@ Function read call count: 13
 
 ### 2.2 Windows 平台下的实现及验证
 
-暂略
+在 Windows 平台下使用套接字需要进行一些初始化工作，这与 Linux 平台有所不同。
+
+#### 2.2.1 Winsock 初始化
+
+Windows 下的套接字称为 Winsock，使用前必须调用 `WSAStartup` 函数进行初始化：
+
+```c
+#include <winsock2.h>
+int WSAStartup(WORD wVersionRequested, LPWSADATA lpWSAData);
+/*
+成功时返回0，失败时返回非0错误代码
+wVersionRequested: 程序员请求的Winsock版本，高字节指副版本，低字节指主版本
+lpWSAData: 指向WSADATA结构的指针，用于接收Windows Sockets实现的详细信息
+*/
+```
+
+使用 Winsock 完成后，应调用 `WSACleanup` 函数释放资源：
+
+```c
+int WSACleanup(void);
+/*
+成功时返回0，失败时返回SOCKET_ERROR
+*/
+```
+
+#### 2.2.2 Windows 与 Linux 套接字编程的主要区别
+
+| 特性 | Linux | Windows |
+| ---- | ----- | ------- |
+| 头文件 | `sys/socket.h` 等 | `winsock2.h`, `ws2tcpip.h` |
+| 初始化 | 无需初始化 | 必须调用 `WSAStartup` |
+| 套接字类型 | 文件描述符（int） | `SOCKET` 类型（实际是 `UINT_PTR`） |
+| 错误检查 | 返回-1表示失败 | 返回 `INVALID_SOCKET` 表示失败 |
+| 关闭套接字 | `close(fd)` | `closesocket(socket)` |
+| 获取错误码 | 访问全局变量 `errno` | 调用 `WSAGetLastError()` |
+| I/O 函数 | `read`, `write` 可用于套接字 | `recv`, `send` 必须用于套接字 |
+
+#### 2.2.3 Windows 平台代码示例
+
+Windows 平台下的 TCP 客户端和服务端代码结构类似，主要区别在于初始化和清理过程。以下是 Windows 版本的基本结构：
+
+```c
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#pragma comment(lib, "ws2_32.lib")  // 链接 Winsock 库
+
+int main(int argc, char *argv[])
+{
+    WSADATA wsaData;
+    SOCKET hServSock, hClntSock;
+    SOCKADDR_IN servAddr, clntAddr;
+    int szClntAddr;
+
+    // 1. 初始化 Winsock
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+        printf("WSAStartup() error");
+        return 1;
+    }
+
+    // 2. 创建套接字
+    hServSock = socket(PF_INET, SOCK_STREAM, 0);
+    if (hServSock == INVALID_SOCKET) {
+        printf("socket() error");
+        WSACleanup();
+        return 1;
+    }
+
+    // ... 其余代码与 Linux 版本类似 ...
+
+    // 9. 关闭套接字
+    closesocket(hServSock);
+
+    // 10. 清理 Winsock
+    WSACleanup();
+
+    return 0;
+}
+```
+
+编译命令（使用 Visual Studio 的命令行工具）：
+
+```cmd
+cl tcp_client_win.c /link ws2_32.lib
+cl tcp_server_win.c /link ws2_32.lib
+```
+
+或者使用 MinGW：
+
+```cmd
+gcc tcp_client_win.c -o hclient -lws2_32
+gcc tcp_server_win.c -o hserver -lws2_32
+```
 
 ### 2.3 习题
 
@@ -155,4 +247,7 @@ Function read call count: 13
 
 5. 何种类型的套接字不存在数据边界？这类套接字接收数据时应该注意什么？
 
-   > 答：TCP 不存在数据边界。在接收数据时，需要保证在接收套接字的缓冲区填充满之时就从buffer里读取数据。也就是，在接收套接字内部，写入buffer的速度要小于读出buffer的速度。
+   > 答：面向连接的 TCP 套接字不存在数据边界。接收数据时需要注意：
+   > 1. **数据可能分多次到达**：发送方调用一次 write 发送 100 字节，接收方可能需要多次 read 才能读完，或者一次 read 就能读完多次 write 的数据。
+   > 2. **需要定义应用层协议**：由于没有边界，必须在应用层定义数据边界（如固定长度、分隔符、长度前缀等方式），否则无法正确解析数据。
+   > 3. **缓冲区管理**：虽然 TCP 内部有流量控制机制保证不丢数据，但应用层仍应及时读取数据，避免接收缓冲区占用过多内存。

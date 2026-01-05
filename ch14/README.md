@@ -39,7 +39,7 @@ int send_sock;
 int time_live = 64;
 ...
 send_sock=socket(PF_INET,SOCK_DGRAM,0);
-setsockopt(send_sock,IPPROTO_IP,IP_MULTICAST_TTL,(void*)&time_live,sizeof(time_live);
+setsockopt(send_sock,IPPROTO_IP,IP_MULTICAST_TTL,(void*)&time_live,sizeof(time_live));
 ...
 ```
 
@@ -53,7 +53,7 @@ recv_sock=socket(PF_INET,SOCK_DGRAM,0);
 ...
 join_adr.imr_multiaddr.s_addr="多播组地址信息";
 join_adr.imr_interface.s_addr="加入多播组的主机地址信息";
-setsockopt(recv_sock,IPPROTO_IP,IP_ADD_MEMBERSHIP,(void*)&join_adr,sizeof(join_adr);
+setsockopt(recv_sock,IPPROTO_IP,IP_ADD_MEMBERSHIP,(void*)&join_adr,sizeof(join_adr));
 ...
 ```
 
@@ -71,7 +71,7 @@ struct ip_mreq
 
 多播中用「发送者」（以下称为 Sender） 和「接收者」（以下称为 Receiver）替代服务器端和客户端。顾名思义，此处的 Sender 是多播数据的发送主体，Receiver 是需要多播组加入过程的数据接收主体。下面是示例，示例的运行场景如下：
 
-- Sender : 向 AAA 组广播（Broadcasting）文件中保存的新闻信息
+- Sender : 向 AAA 组多播（Multicasting）文件中保存的新闻信息
 - Receiver : 接收传递到 AAA 组的新闻信息。
 
 下面是两个代码：
@@ -143,7 +143,67 @@ gcc news_sender_brd.c -o sender
 
 ### 14.3 基于 Windows 的实现
 
-暂略
+Windows 平台下的多播和广播实现与 Linux 类似，主要区别在于套接字操作相关的头文件和函数调用。
+
+#### 14.3.1 Windows 多播实现
+
+在 Windows 中实现多播 Sender 时，需要包含 `winsock2.h` 头文件，并链接 `ws2_32.lib` 库。主要代码区别如下：
+
+```c
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+
+// Windows 下的套接字初始化
+WSADATA wsaData;
+if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    error_handling("WSAStartup() error");
+
+// 创建套接字
+SOCKET send_sock;
+send_sock = socket(AF_INET, SOCK_DGRAM, 0);
+
+// 设置 TTL
+int time_live = 64;
+setsockopt(send_sock, IPPROTO_IP, IP_MULTICAST_TTL, (char*)&time_live, sizeof(time_live));
+
+// ... 发送数据 ...
+
+// Windows 下的套接字关闭
+closesocket(send_sock);
+WSACleanup();
+```
+
+Windows 下实现多播 Receiver 时，加入多播组的代码如下：
+
+```c
+struct ip_mreq join_adr;
+join_adr.imr_multiaddr.s_addr = inet_addr(group_ip);
+join_adr.imr_interface.s_addr = htonl(INADDR_ANY);
+setsockopt(recv_sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&join_adr, sizeof(join_adr));
+```
+
+#### 14.3.2 Windows 广播实现
+
+Windows 下实现广播时，启用广播的代码如下：
+
+```c
+SOCKET send_sock;
+send_sock = socket(AF_INET, SOCK_DGRAM, 0);
+
+int bcast = 1;
+setsockopt(send_sock, SOL_SOCKET, SO_BROADCAST, (char*)&bcast, sizeof(bcast));
+
+// ... 发送数据 ...
+```
+
+与 Linux 的主要区别总结：
+
+1. 头文件：Windows 使用 `winsock2.h`，Linux 使用 `sys/socket.h` 等头文件
+2. 初始化：Windows 需要调用 `WSAStartup` 初始化 Winsock，使用完后调用 `WSACleanup`
+3. 套接字类型：Windows 使用 `SOCKET` 类型（实际是 `unsigned __int64`），Linux 使用 `int`
+4. 关闭套接字：Windows 使用 `closesocket`，Linux 使用 `close`
+5. 指针类型转换：Windows 下 `setsockopt` 的第四个参数通常转换为 `char*`，Linux 下转换为 `void*`
 
 ### 14.4 习题
 
@@ -159,12 +219,12 @@ gcc news_sender_brd.c -o sender
 
 3. **下面关于多播的说法描述错误的是**？
 
-   答：以下内容加粗的为描述正确
+   答：第 2 项描述错误。正确说明如下：
 
-   1. 多播是用来加入多播组的所有主机传输数据的协议
-   2. 主机连接到同一网络才能加入到多播组，也就是说，多播组无法跨越多个网络
-   3. **能够加入多播组的主机数并无限制，但只能有 1个主机（Sender）向该组发送数据**
-   4. **多播时使用的套接字是 UDP 套接字，因为多播是基于 UDP 进行数据通信的。**
+   1. 多播是用来向加入多播组的所有主机传输数据的协议
+   2. ~~主机连接到同一网络才能加入到多播组，也就是说，多播组无法跨越多个网络~~（错误。多播可以跨越多个网络，只要路由器支持多播功能，主机就可以加入跨网络的多播组。即使路由器不支持，也可以通过隧道技术实现。）
+   3. 能够加入多播组的主机数并无限制，但只能有 1 个主机（Sender）向该组发送数据
+   4. 多播时使用的套接字是 UDP 套接字，因为多播是基于 UDP 进行数据通信的
 
 4. **多播也对网络流量有利，请比较 TCP 交换方式解释其原因**
 
@@ -172,4 +232,4 @@ gcc news_sender_brd.c -o sender
 
 5. **多播方式的数据通信需要 MBone 虚拟网络。换言之，MBone 是用于多播的网络，但它是虚拟网络。请解释此处的「虚拟网络」**
 
-   答：可以理解为「通过网络中的特殊协议工作的软件概念上的网络」。也就是说， MBone 并非可以触及的物理网络。他是以物理网络为基础，通过软件方法实现的多播通信必备虚拟网络。
+   答：可以理解为「通过网络中的特殊协议工作的软件概念上的网络」。也就是说，MBone 并非可以触及的物理网络。它是以物理网络为基础，通过软件方法（隧道技术）实现的多播通信必备虚拟网络。MBone（Multicast Backbone）是互联网的多播骨干网，通过在支持多播的路由器之间建立隧道，将不支持多播的网络连接起来，从而构建一个覆盖全球的虚拟多播网络。
