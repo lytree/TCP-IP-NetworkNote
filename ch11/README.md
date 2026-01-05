@@ -10,7 +10,7 @@
 
 下图是基于管道（PIPE）的进程间通信的模型：
 
-![](https://s2.ax1x.com/2019/01/22/kFlk0s.png)
+![](images/kFlk0s.png)
 
 可以看出，为了完成进程间通信，需要创建进程。管道并非属于进程的资源，而是和套接字一样，属于操作系统（也就不是 fork 函数的复制对象）。所以，两个进程通过操作系统提供的内存空间进行通信。下面是创建管道的函数。
 
@@ -70,13 +70,13 @@ Who are you?
 
 可以从程序中看出，首先创建了一个管道，子进程通过 fds[1] 把数据写入管道，父进程从 fds[0] 再把数据读出来。可以从下图看出：
 
-![](https://s2.ax1x.com/2019/01/22/kF8A7d.png)
+![](images/kF8A7d.png)
 
 #### 11.1.2 通过管道进行进程间双向通信
 
 下图可以看出双向通信模型：
 
-![](https://s2.ax1x.com/2019/01/22/kF84De.png)
+![](images/kF84De.png)
 
 下面是双向通信的示例：
 
@@ -133,7 +133,7 @@ Child proc output: Thank you for your message
 
 当一个管道不满足需求时，就需要创建两个管道，各自负责不同的数据流动，过程如下图所示：
 
-![](https://s2.ax1x.com/2019/01/22/kFJW0e.png)
+![](images/kFJW0e.png)
 
 下面采用上述模型改进 `pipe2.c` 。
 
@@ -193,9 +193,9 @@ gcc echo_storeserv.c -o serv
 
 此服务端配合第 10 章的客户端 [echo_mpclient.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/echo_mpclient.c) 使用，运行结果如下图:
 
-![](https://s2.ax1x.com/2019/01/22/kFUCct.png)
+![](images/kFUCct.png)
 
-![](https://s2.ax1x.com/2019/01/22/kFUAHS.png)
+![](images/kFUAHS.png)
 
 从图上可以看出，服务端已经生成了文件，把客户端的消息保存了下来，只保存了10次消息。
 
