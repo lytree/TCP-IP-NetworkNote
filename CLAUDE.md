@@ -38,6 +38,9 @@ ch24/    - 第 24 章：制作 HTTP 服务器端
 - `README.md` - 章节笔记（理论 + 习题）
 - `.c` 文件 - 示例代码
 
+项目根目录包含：
+- `images/` - 所有章节的图片资源（统一存放）
+
 ## 编译和运行
 
 所有示例都是独立的 C 程序，使用 gcc 编译：
@@ -75,6 +78,8 @@ gcc thread1.c -o tr1 -lpthread
 3. **章节更新流程**：根目录 README.md 包含所有 19 个章节的合并内容。更新内容时，先修改子目录中对应章节的 README.md，然后合并到根 README.md。
 
 4. **代码引用格式**：引用示例代码时使用相对路径，不加章节前缀（例如用 `[hello_server.c](hello_server.c)` 而不是 `[hello_server.c](ch01/hello_server.c)`）。
+
+5. **图片引用格式**：所有图片统一存放在根目录 `images/` 下。在 README.md 中引用图片时使用统一路径 `images/文件名.png`（无论是根目录还是子目录的 README.md）。
 
 ## 涵盖的核心套接字编程概念
 
