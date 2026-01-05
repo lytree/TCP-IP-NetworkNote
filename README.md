@@ -95,7 +95,7 @@ int accept(int sockfd,struct sockaddr *addr,socklen_t *addrlen);
 
 服务器端（server）是能够受理连接请求的程序。下面构建服务端以验证之前提到的函数调用过程，该服务器端收到连接请求后向请求者返回`Hello World!`答复。除各种函数的调用顺序外，我们还未涉及任何实际编程。因此，阅读代码时请重点关注套接字相关的函数调用过程，不必理解全过程。
 
-服务器端代码请参见：[hello_server.c](hello_server.c)
+服务器端代码请参见：[hello_server.c](ch01/hello_server.c)
 
 **客户端**：
 
@@ -104,7 +104,7 @@ int accept(int sockfd,struct sockaddr *addr,socklen_t *addrlen);
 1. 调用 socket 函数 和 connect 函数
 2. 与服务端共同运行以收发字符串数据
 
-客户端代码请参见：[hello_client.c](hello_client.c)
+客户端代码请参见：[hello_client.c](ch01/hello_client.c)
 
 **编译**：
 
@@ -197,7 +197,7 @@ nbytes : 要传输数据的字节数
 
 创建新文件并保存数据：
 
-代码见：[low_open.c](low_open.c)
+代码见：[low_open.c](ch01/low_open.c)
 
 编译运行：
 
@@ -225,7 +225,7 @@ nbytes : 要接收数据的最大字节数
 
 下面示例通过 read() 函数读取 data.txt 中保存的数据。
 
-代码见：[low_read.c](low_read.c)
+代码见：[low_read.c](ch01/low_read.c)
 
 编译运行：
 
@@ -247,7 +247,7 @@ file data: Let's go!
 
 下面将同时创建文件和套接字，并用整数型态比较返回的文件描述符的值.
 
-代码见：[fd_seri.c](fd_seri.c)
+代码见：[fd_seri.c](ch01/fd_seri.c)
 
 **编译运行**：
 
@@ -501,8 +501,8 @@ int udp_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 需要对第一章的代码做出修改，修改好的代码如下：
 
-- [tcp_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch02/tcp_client.c)
-- [tcp_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch02/tcp_server.c)
+- [tcp_client.c](ch02/tcp_client.c)
+- [tcp_server.c](ch02/tcp_server.c)
 
 编译：
 
@@ -855,7 +855,7 @@ unsigned long ntohl(unsigned long);
 
 下面的代码是示例，说明以上函数调用过程：
 
-[endian_conv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch03/endian_conv.c)
+[endian_conv.c](ch03/endian_conv.c)
 
 ```c
 #include <stdio.h>
@@ -911,7 +911,7 @@ in_addr_t inet_addr(const char *string);
 
 具体示例：
 
-[inet_addr.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch03/inet_addr.c)
+[inet_addr.c](ch03/inet_addr.c)
 
 ```c
 #include <stdio.h>
@@ -966,7 +966,7 @@ addr: 保存转换结果的 in_addr 结构体变量的地址值
 
 函数调用示例：
 
-[inet_aton.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch03/inet_aton.c)
+[inet_aton.c](ch03/inet_aton.c)
 
 ```c
 #include <stdio.h>
@@ -1021,7 +1021,7 @@ char *inet_ntoa(struct in_addr adr);
 
 示例：
 
-[inet_ntoa.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch03/inet_ntoa.c)
+[inet_ntoa.c](ch03/inet_ntoa.c)
 
 ```c
 #include <stdio.h>
@@ -1242,7 +1242,7 @@ accept 函数受理连接请求队列中待处理的客户端连接请求。函�
 
 #### 4.2.4 回顾 Hello World 服务端
 
-- 代码：[hello_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch04/hello_server.c)
+- 代码：[hello_server.c](ch04/hello_server.c)
 
 重新整理一下代码的思路
 
@@ -1280,7 +1280,7 @@ addrlen: 第二个结构体参数 servaddr 变量的字节长度
 
 #### 4.2.6 回顾 Hello World 客户端
 
-- 代码：[hello_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch04/hello_client.c)
+- 代码：[hello_client.c](ch04/hello_client.c)
 
 重新理解这个程序：
 
@@ -1323,8 +1323,8 @@ addrlen: 第二个结构体参数 servaddr 变量的字节长度
 
 以下是服务端与客户端的代码：
 
-- [echo_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch04/echo_server.c)
-- [echo_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch04/echo_client.c)
+- [echo_server.c](ch04/echo_server.c)
+- [echo_client.c](ch04/echo_client.c)
 
 编译:
 
@@ -1455,7 +1455,7 @@ while (1)
 
 这个问题其实很容易解决，因为可以提前接收数据的大小。若之前传输了 20 字节长的字符串，则在接收时循环调用 read 函数读取 20 个字节即可。既然有了解决办法，那么代码如下：
 
-- [echo_client2.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch05/echo_client2.c)
+- [echo_client2.c](ch05/echo_client2.c)
 
 这样修改为了接收所有传输数据而循环调用 read 函数。测试及运行结果可参考第四章。
 
@@ -1478,8 +1478,8 @@ while (1)
 
 我自己的实现：
 
-- [My_op_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch05/My_op_server.c)
-- [My_op_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch05/My_op_client.c)
+- [My_op_server.c](ch05/My_op_server.c)
+- [My_op_client.c](ch05/My_op_client.c)
 
 编译：
 
@@ -1496,8 +1496,8 @@ gcc My_op_server.c -o myserver
 
 书上的实现：
 
-- [op_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch05/op_client.c)
-- [op_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch05/op_server.c)
+- [op_client.c](ch05/op_client.c)
+- [op_server.c](ch05/op_server.c)
 
 阅读代码要注意一下，`int*`与`char`之间的转换。TCP 中不存在数据边界。
 
@@ -1744,8 +1744,8 @@ addrlen: 保存参数 from 的结构体变量长度的变量地址值。
 
 代码：
 
-- [uecho_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch06/uecho_client.c)
-- [uecho_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch06/uecho_server.c)
+- [uecho_client.c](ch06/uecho_client.c)
+- [uecho_server.c](ch06/uecho_server.c)
 
 编译运行：
 
@@ -1778,8 +1778,8 @@ UDP 程序中，调用 sendto 函数传输数据前应该完成对套接字的�
 
 相反，UDP 是具有数据边界的协议，传输中调用 I/O 函数的次数非常重要。因此，输入函数的调用次数和输出函数的调用次数应该完全一致，这样才能保证接收全部已经发送的数据。例如，调用 3 次输出函数发送的数据必须通过调用 3 次输入函数才能接收完。通过一个例子来进行验证：
 
-- [bound_host1.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch06/bound_host1.c)
-- [bound_host2.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch06/bound_host2.c)
+- [bound_host1.c](ch06/bound_host1.c)
+- [bound_host2.c](ch06/bound_host2.c)
 
 编译运行：
 
@@ -1825,9 +1825,9 @@ connect(sock, (struct sockaddr *)&adr, sizeof(adr));
 
 之后就与 TCP 套接字一致，每次调用 sendto 函数时只需传递信息数据。因为已经指定了收发对象，所以不仅可以使用 sendto、recvfrom 函数，还可以使用 write、read 函数进行通信。
 
-下面的例子把之前的 [uecho_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch06/uecho_client.c) 程序改成了基于已连接 UDP 的套接字的程序，因此可以结合 [uecho_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch06/uecho_server.c) 程序运行。代码如下：
+下面的例子把之前的 [uecho_client.c](ch06/uecho_client.c) 程序改成了基于已连接 UDP 的套接字的程序，因此可以结合 [uecho_server.c](ch06/uecho_server.c) 程序运行。代码如下：
 
-- [uecho_con_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch06/uecho_con_client.c)
+- [uecho_con_client.c](ch06/uecho_con_client.c)
 
 编译运行过程与上面一样，故省略。
 
@@ -1948,8 +1948,8 @@ howto: 传递断开方式信息
 
 下面的代码为编程简便，省略了大量错误处理代码。
 
-- [file_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch07/file_client.c)
-- [file_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch07/file_server.c)
+- [file_client.c](ch07/file_client.c)
+- [file_server.c](ch07/file_server.c)
 
 编译运行：
 
@@ -2074,7 +2074,7 @@ struct hostent
 
 下面的代码通过一个例子来演示 gethostbyname 的应用，并说明 hostent 结构体变量特性。
 
-- [gethostbyname.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch08/gethostbyname.c)
+- [gethostbyname.c](ch08/gethostbyname.c)
 
 编译运行：
 
@@ -2128,7 +2128,7 @@ family: 传递地址族信息，IPv4 是 AF_INET，IPv6 是 AF_INET6。
 
 下面的代码演示使用方法：
 
-- [gethostbyaddr.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch08/gethostbyaddr.c)
+- [gethostbyaddr.c](ch08/gethostbyaddr.c)
 
 编译运行：
 
@@ -2259,7 +2259,7 @@ optlen: 向第四个参数传递的缓冲大小值（选项值的长度）。
 
 下面的代码可以看出 getsockopt 的使用方法。下面示例用协议层为 SOL_SOCKET 、名为 SO_TYPE 的可选项查看套接字类型（TCP 和 UDP ）。
 
-- [sock_type.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch09/sock_type.c)
+- [sock_type.c](ch09/sock_type.c)
 
 编译运行：
 
@@ -2287,7 +2287,7 @@ Socket type two: 2
 
 SO_RCVBUF 是输入缓冲大小相关可选项，SO_SNDBUF 是输出缓冲大小相关可选项。用这 2 个可选项既可以读取当前 I/O 大小，也可以进行更改。通过下列示例读取创建套接字时默认的 I/O 缓冲大小。
 
-- [get_buf.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch09/get_buf.c)
+- [get_buf.c](ch09/get_buf.c)
 
 编译运行：
 
@@ -2307,7 +2307,7 @@ Output buffer size: 16384
 
 下面的代码演示了，通过程序设置 I/O 缓冲区的大小
 
-- [set_buf.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch09/set_buf.c)
+- [set_buf.c](ch09/set_buf.c)
 
 编译运行：
 
@@ -2331,9 +2331,9 @@ Output buffer size: 6144
 
 在学习 SO_REUSEADDR 可选项之前，应该好好理解 Time-wait 状态。看以下代码的示例：
 
-- [reuseadr_eserver.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch09/reuseadr_eserver.c)
+- [reuseadr_eserver.c](ch09/reuseadr_eserver.c)
 
-这是一个回声服务器的服务端代码，可以配合第四章的 [echo_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch04/echo_client.c) 使用，在这个代码中，客户端通知服务器终止程序。在客户端控制台输入 Q 可以结束程序，向服务器发送 FIN 消息并经过四次握手过程。当然，输入 CTRL+C 也会向服务器传递 FIN 信息。强制终止程序时，由操作系统关闭文件套接字，此过程相当于调用 close 函数，也会向服务器发送 FIN 消息。
+这是一个回声服务器的服务端代码，可以配合第四章的 [echo_client.c](ch04/echo_client.c) 使用，在这个代码中，客户端通知服务器终止程序。在客户端控制台输入 Q 可以结束程序，向服务器发送 FIN 消息并经过四次握手过程。当然，输入 CTRL+C 也会向服务器传递 FIN 信息。强制终止程序时，由操作系统关闭文件套接字，此过程相当于调用 close 函数，也会向服务器发送 FIN 消息。
 
 这样看不到是什么特殊现象，考虑以下情况：
 
@@ -2361,7 +2361,7 @@ Time-wait 状态看似重要，但是不一定讨人喜欢。如果系统发生�
 
 从图上可以看出，在主机 A 四次握手的过程中，如果最后的数据丢失，则主机 B 会认为主机 A 未能收到自己发送的 FIN 信息，因此重传。这时，收到的 FIN 消息的主机 A 将重启  Time-wait 计时器。因此，如果网络状况不理想， Time-wait 将持续。
 
-解决方案就是在套接字的可选项中更改 SO_REUSEADDR 的状态。适当调整该参数，可将 Time-wait 状态下的套接字端口号重新分配给新的套接字。SO_REUSEADDR 的默认值为 0.这就意味着无法分配 Time-wait 状态下的套接字端口号。因此需要将这个值改成 1 。具体作法已在示例 [reuseadr_eserver.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch09/reuseadr_eserver.c) 给出，只需要把注释掉的东西解除注释即可。
+解决方案就是在套接字的可选项中更改 SO_REUSEADDR 的状态。适当调整该参数，可将 Time-wait 状态下的套接字端口号重新分配给新的套接字。SO_REUSEADDR 的默认值为 0.这就意味着无法分配 Time-wait 状态下的套接字端口号。因此需要将这个值改成 1 。具体作法已在示例 [reuseadr_eserver.c](ch09/reuseadr_eserver.c) 给出，只需要把注释掉的东西解除注释即可。
 
 ```c
 optlen = sizeof(option);
@@ -2486,7 +2486,7 @@ fork 函数将创建调用的进程副本。也就是说，并非根据完全不
 
 从图中可以看出，父进程调用 fork 函数的同时复制出子进程，并分别得到 fork 函数的返回值。但复制前，父进程将全局变量 gval 增加到 11，将局部变量 lval 的值增加到 25，因此在这种状态下完成进程复制。复制完成后根据 fork 函数的返回值区分父子进程。父进程的 lval 的值增加 1，但这不会影响子进程的 lval 值。同样子进程将 gval 的值增加 1 也不会影响到父进程的 gval。因为 fork 函数调用后分成了完全不同的进程，只是二者共享同一段代码而已。接下来给出一个例子：
 
-- [fork.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/fork.c)
+- [fork.c](ch10/fork.c)
 
 ```c
 #include <stdio.h>
@@ -2560,7 +2560,7 @@ gcc fork.c -o fork
 
 如何向父进程传递这些值呢？操作系统不会主动把这些值传递给父进程。只有父进程主动发起请求（函数调用）的时候，操作系统才会传递该值。换言之，如果父进程未主动要求获得子进程结束状态值，操作系统将一直保存，并让子进程长时间处于僵尸进程状态。也就是说，父母要负责收回自己生的孩子。接下来的示例是创建僵尸进程：
 
-- [zombie.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/zombie.c)
+- [zombie.c](ch10/zombie.c)
 
 ```c
 #include <stdio.h>
@@ -2633,7 +2633,7 @@ if (WIFEXITED(status))
 
 根据以上内容，有如下示例：
 
-- [wait.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/wait.c)
+- [wait.c](ch10/wait.c)
 
 ```c
 #include <stdio.h>
@@ -2707,7 +2707,7 @@ options: 传递头文件 sys/wait.h 声明的常量 WNOHANG ,即使没有终止�
 
 以下是 waitpid 的使用示例：
 
-- [waitpid.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/waitpid.c)
+- [waitpid.c](ch10/waitpid.c)
 
 ```c
 #include <stdio.h>
@@ -2821,7 +2821,7 @@ unsigned int alarm(unsigned int seconds);
 
 如果调用该函数的同时向它传递一个正整型参数，相应时间后（以秒为单位）将产生 SIGALRM 信号。若向该函数传递 0，则之前对 SIGALRM 信号的预约将取消。如果通过该函数预约信号后未指定该信号对应的处理函数，则（通过调用 signal 函数）终止进程，不做任何处理。
 
-- [signal.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/signal.c)
+- [signal.c](ch10/signal.c)
 
 ```c
 #include <stdio.h>
@@ -2911,7 +2911,7 @@ struct sigaction
 
 下面的示例是关于 sigaction 函数的使用方法。
 
-- [sigaction.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/sigaction.c)
+- [sigaction.c](ch10/sigaction.c)
 
 ```c
 #include <stdio.h>
@@ -2970,7 +2970,7 @@ Time out!
 
 下面利用子进程终止时产生 SIGCHLD 信号这一点，来用信号处理来消灭僵尸进程。看以下代码：
 
-- [remove_zomebie.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/remove_zomebie.c)
+- [remove_zomebie.c](ch10/remove_zomebie.c)
 
 ```c
 #include <stdio.h>
@@ -3078,9 +3078,9 @@ wait
 
 #### 10.4.2 实现并发服务器
 
-下面是基于多进程实现的并发的回声服务器的服务端，可以结合第四章的 [echo_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch04/echo_client.c) 回声客户端来运行。
+下面是基于多进程实现的并发的回声服务器的服务端，可以结合第四章的 [echo_client.c](ch04/echo_client.c) 回声客户端来运行。
 
-- [echo_mpserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/echo_mpserv.c)
+- [echo_mpserv.c](ch10/echo_mpserv.c)
 
 编译运行：
 
@@ -3131,7 +3131,7 @@ gcc echo_mpserv.c -o eserver
 
 下面是回声客户端的 I/O 分割的代码实现：
 
-- [echo_mpclient.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/echo_mpclient.c)
+- [echo_mpclient.c](ch10/echo_mpclient.c)
 
 可以配合刚才的并发服务器进行执行。
 
@@ -3172,7 +3172,7 @@ gcc echo_mpclient.c -o eclient
 
 3. **创建子进程时复制父进程所有内容，此时复制对象也包含套接字文件描述符。编写程序验证复制的文件描述符整数值是否与原文件描述符数值相同。**
 
-   答：代码为多进程服务器修改而来，代码：[test_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/test_server.c)
+   答：代码为多进程服务器修改而来，代码：[test_server.c](ch10/test_server.c)
 
    运行截图：
 
@@ -3220,7 +3220,7 @@ filedes[1]: 通过管道传输数据时使用的文件描述符，即管道入�
 
 父进程调用函数时将创建管道，同时获取对应于出入口的文件描述符，此时父进程可以读写同一管道。但父进程的目的是与子进程进行数据交换，因此需要将入口或出口中的 1 个文件描述符传递给子进程。下面的例子是关于该函数的使用方法：
 
-- [pipe1.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch11/pipe1.c)
+- [pipe1.c](ch11/pipe1.c)
 
 ```c
 #include <stdio.h>
@@ -3274,7 +3274,7 @@ Who are you?
 
 下面是双向通信的示例：
 
-- [pipe2.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch11/pipe2.c)
+- [pipe2.c](ch11/pipe2.c)
 
 ```c
 #include <stdio.h>
@@ -3331,7 +3331,7 @@ Child proc output: Thank you for your message
 
 下面采用上述模型改进 `pipe2.c` 。
 
-- [pipe3.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch11/pipe3.c)
+- [pipe3.c](ch11/pipe3.c)
 
 ```c
 #include <stdio.h>
@@ -3370,13 +3370,13 @@ int main(int argc, char *argv[])
 
 #### 11.2.1 保存消息的回声服务器
 
-下面对第 10 章的 [echo_mpserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/echo_mpserv.c) 进行改进，添加一个功能：
+下面对第 10 章的 [echo_mpserv.c](ch10/echo_mpserv.c) 进行改进，添加一个功能：
 
 > 将回声客户端传输的字符串按序保存到文件中
 
 实现该任务将创建一个新进程，从向客户端提供服务的进程读取字符串信息，下面是代码：
 
-- [echo_storeserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch11/echo_storeserv.c)
+- [echo_storeserv.c](ch11/echo_storeserv.c)
 
 编译运行：
 
@@ -3385,7 +3385,7 @@ gcc echo_storeserv.c -o serv
 ./serv 9190
 ```
 
-此服务端配合第 10 章的客户端 [echo_mpclient.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/echo_mpclient.c) 使用，运行结果如下图:
+此服务端配合第 10 章的客户端 [echo_mpclient.c](ch10/echo_mpclient.c) 使用，运行结果如下图:
 
 ![](images/kFUCct.png)
 
@@ -3562,7 +3562,7 @@ select 返回正整数时，怎样获知哪些文件描述符发生了变化？�
 
 下面是一个 select 函数的例子：
 
-- [select.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch12/select.c)
+- [select.c](ch12/select.c)
 
 编译运行：
 
@@ -3581,7 +3581,7 @@ gcc select.c -o select
 
 下面通过 select 函数实现 I/O 复用服务器端。下面是基于 I/O 复用的回声服务器端。
 
-- [echo_selectserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch12/echo_selectserv.c)
+- [echo_selectserv.c](ch12/echo_selectserv.c)
 
 编译运行：
 
@@ -3678,8 +3678,8 @@ send & recv 函数的可选项意义：
 
 MSG_OOB 可选项用于创建特殊发送方法和通道以发送紧急消息。下面为 MSG_OOB 的示例代码：
 
-- [oob_recv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/oob_recv.c)
-- [oob_send.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/oob_send.c)
+- [oob_recv.c](ch13/oob_recv.c)
+- [oob_send.c](ch13/oob_send.c)
 
 编译运行：
 
@@ -3751,8 +3751,8 @@ TCP 数据包实际包含更多信息。TCP 头部包含如下两种信息：
 
 同时设置 MSG_PEEK 选项和 MSG_DONTWAIT 选项，以验证输入缓冲是否存在接收的数据。设置 MSG_PEEK 选项并调用 recv 函数时，即使读取了输入缓冲的数据也不会删除。因此，该选项通常与 MSG_DONTWAIT 配合，用于以非阻塞方式验证待读数据存在与否。下面的示例是二者的含义：
 
-- [peek_recv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/peek_recv.c)
-- [peek_send.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/peek_send.c)
+- [peek_recv.c](ch13/peek_recv.c)
+- [peek_send.c](ch13/peek_send.c)
 
 编译运行：
 
@@ -3808,7 +3808,7 @@ writev 的第一个参数，是文件描述符，因此向控制台输出数据�
 
 下面是 writev 函数的使用方法：
 
-- [writev.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/writev.c)
+- [writev.c](ch13/writev.c)
 
 ```c
 #include <stdio.h>
@@ -3861,7 +3861,7 @@ iovcnt: 第二个参数中数组的长度
 
 下面是示例代码：
 
-- [readv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch13/readv.c)
+- [readv.c](ch13/readv.c)
 
 ```c
 #include <stdio.h>
@@ -4087,8 +4087,8 @@ struct ip_mreq
 
 下面是两个代码：
 
-- [news_sender.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch14/news_sender.c)
-- [news_receiver.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch14/news_receiver.c)
+- [news_sender.c](ch14/news_sender.c)
+- [news_receiver.c](ch14/news_receiver.c)
 
 编译运行：
 
@@ -4136,8 +4136,8 @@ setsockopt(send_sock,SOL_SOCKET,SO_BROADCAST,(void*)&bcast,sizeof(bcast));
 
 下面是广播数据的 Sender 和 Receiver的代码：
 
-- [news_sender_brd.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch14/news_sender_brd.c)
-- [news_receiver_brd.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch14/news_receiver_brd.c)
+- [news_sender_brd.c](ch14/news_sender_brd.c)
+- [news_receiver_brd.c](ch14/news_receiver_brd.c)
 
 编译运行：
 
@@ -4277,11 +4277,11 @@ setsockopt(send_sock, SOL_SOCKET, SO_BROADCAST, (char*)&bcast, sizeof(bcast));
 
 下面是利用系统函数的示例：
 
-- [syscpy.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch15/syscpy.c)
+- [syscpy.c](ch15/syscpy.c)
 
 下面是使用标准 I/O 函数复制文件
 
-- [stdcpy.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch15/stdcpy.c)
+- [stdcpy.c](ch15/stdcpy.c)
 
 对于以上两个代码进行测试，明显基于标准 I/O 函数的代码跑的更快。这是因为标准 I/O 函数通过缓冲区减少了系统调用的次数，每次系统调用都有一定的开销（用户态与内核态的切换），而缓冲机制可以将多次小数据量的 I/O 操作合并为较少次数的系统调用，从而提高性能。
 
@@ -4311,7 +4311,7 @@ mode ： 将要创建的 FILE 结构体指针的模式信息
 
 以下为示例：
 
-- [desto.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch15/desto.c)
+- [desto.c](ch15/desto.c)
 
 ```c
 #include <stdio.h>
@@ -4361,7 +4361,7 @@ int fileno(FILE *stream);
 
 示例：
 
-- [todes.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch15/todes.c)
+- [todes.c](ch15/todes.c)
 
 ```c
 #include <stdio.h>
@@ -4392,8 +4392,8 @@ int main()
 
 代码如下：
 
-- [echo_client.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch15/echo_client.c)
-- [echo_stdserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch15/echo_stdserv.c)
+- [echo_client.c](ch15/echo_client.c)
+- [echo_stdserv.c](ch15/echo_stdserv.c)
 
 编译运行：
 
@@ -4470,12 +4470,12 @@ gcc echo_stdserv.c -o eserver
 shutdown(sock,SHUT_WR);
 ```
 
-当时说过调用 shutdown 函数的基于半关闭的 EOF 传递方法。第十章的 [echo_mpclient.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch10/echo_mpclient.c) 添加了半关闭的相关代码。但是还没有讲采用 fdopen 函数怎么半关闭。那么是否是通过 fclose 函数关闭流呢？我们先试试
+当时说过调用 shutdown 函数的基于半关闭的 EOF 传递方法。第十章的 [echo_mpclient.c](ch10/echo_mpclient.c) 添加了半关闭的相关代码。但是还没有讲采用 fdopen 函数怎么半关闭。那么是否是通过 fclose 函数关闭流呢？我们先试试
 
 下面是服务端和客户端码：
 
-- [sep_clnt.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch16/sep_clnt.c)
-- [sep_serv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch16/sep_serv.c)
+- [sep_clnt.c](ch16/sep_clnt.c)
+- [sep_serv.c](ch16/sep_serv.c)
 
 编译运行：
 
@@ -4545,7 +4545,7 @@ fd2 : 明确指定的文件描述符的整数值
 
 dup2 函数明确指定复制的文件描述符的整数值。向其传递大于 0 且小于进程能生成的最大文件描述符值时，该值将成为复制出的文件描述符值。下面是代码示例：
 
-- [dup.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch16/dup.c)
+- [dup.c](ch16/dup.c)
 
 ```c
 #include <stdio.h>
@@ -4587,13 +4587,13 @@ gcc dup.c -o dup
 
 #### 16.2.4 复制文件描述符后「流」的分离
 
-下面更改 [sep_clnt.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch16/sep_clnt.c) 和 [sep_serv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch16/sep_serv.c) 可以使得让它正常工作，正常工作是指通过服务器的半关闭状态接收客户端最后发送的字符串。
+下面更改 [sep_clnt.c](ch16/sep_clnt.c) 和 [sep_serv.c](ch16/sep_serv.c) 可以使得让它正常工作，正常工作是指通过服务器的半关闭状态接收客户端最后发送的字符串。
 
 下面是代码：
 
-- [sep_serv2.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch16/sep_serv2.c)
+- [sep_serv2.c](ch16/sep_serv2.c)
 
-这个代码可以与 [sep_clnt.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch16/sep_clnt.c) 配合起来使用，编译过程和上面一样，运行结果为：
+这个代码可以与 [sep_clnt.c](ch16/sep_clnt.c) 配合起来使用，编译过程和上面一样，运行结果为：
 
 ![](images/5c513d54a27e0.png)
 
@@ -4634,7 +4634,7 @@ select 复用方法由来已久，因此，利用该技术后，无论如何优�
 - 调用 select 函数后常见的针对所有文件描述符的循环语句
 - 每次调用 select 函数时都需要向该函数传递监视对象信息
 
-上述两点可以从 [echo_selectserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch12/echo_selectserv.c) 得到确认，调用 select 函数后，并不是把发生变化的文件描述符单独集中在一起，而是通过作为监视对象的 fd_set 变量的变化，找出发生变化的文件描述符（54,56行），因此无法避免针对所有监视对象的循环语句。而且，作为监视对象的 fd_set 会发生变化，所以调用 select 函数前应该复制并保存原有信息，并在每次调用 select 函数时传递新的监视对象信息。
+上述两点可以从 [echo_selectserv.c](ch12/echo_selectserv.c) 得到确认，调用 select 函数后，并不是把发生变化的文件描述符单独集中在一起，而是通过作为监视对象的 fd_set 变量的变化，找出发生变化的文件描述符（54,56行），因此无法避免针对所有监视对象的循环语句。而且，作为监视对象的 fd_set 会发生变化，所以调用 select 函数前应该复制并保存原有信息，并在每次调用 select 函数时传递新的监视对象信息。
 
 select 性能上最大的弱点是：每次传递监视对象信息，准确的说，select 是监视套接字变化的函数。而套接字是操作系统管理的，所以 select 函数要借助操作系统才能完成功能。select 函数的这一缺点可以通过如下方式弥补：
 
@@ -4807,9 +4807,9 @@ event_cnt=epoll_wait(epfd,ep_events,EPOLL_SIZE,-1);
 
 #### 17.1.7 基于 epoll 的回声服务器端
 
-下面是回声服务器端的代码（修改自第 12 章 [echo_selectserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch12/echo_selectserv.c)）：
+下面是回声服务器端的代码（修改自第 12 章 [echo_selectserv.c](ch12/echo_selectserv.c)）：
 
-- [echo_epollserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch17/echo_epollserv.c)
+- [echo_epollserv.c](ch17/echo_epollserv.c)
 
 编译运行：
 
@@ -4856,9 +4856,9 @@ select 和 epoll 的区别：
 
 #### 17.2.2 掌握条件触发的事件特性
 
-下面代码修改自 [echo_epollserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch17/echo_epollserv.c) 。epoll 默认以条件触发的方式工作，因此可以通过该示例验证条件触发的特性。
+下面代码修改自 [echo_epollserv.c](ch17/echo_epollserv.c) 。epoll 默认以条件触发的方式工作，因此可以通过该示例验证条件触发的特性。
 
-- [echo_EPLTserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch17/echo_EPLTserv.c)
+- [echo_EPLTserv.c](ch17/echo_EPLTserv.c)
 
 上面的代码把调用 read 函数时使用的缓冲大小缩小到了 4 个字节，插入了验证 epoll_wait 调用次数的验证函数。减少缓冲大小是为了阻止服务器端一次性读取接收的数据。换言之，调用 read 函数后，输入缓冲中仍有数据要读取，而且会因此注册新的事件并从 epoll_wait 函数返回时将循环输出「return epoll_wait」字符串。
 
@@ -4883,7 +4883,7 @@ gcc echo_EPLTserv.c -o serv
 
 代码：
 
-- [echo_EDGEserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch17/echo_EDGEserv.c)
+- [echo_EDGEserv.c](ch17/echo_EDGEserv.c)
 
 编译运行：
 
@@ -4948,7 +4948,7 @@ fcntl(fd, F_SETFL, flag | O_NONBLOCK);
 
 下面是以边缘触发方式工作的回声服务端代码：
 
-- [echo_EPETserv.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch17/echo_EPETserv.c)
+- [echo_EPETserv.c](ch17/echo_EPETserv.c)
 
 编译运行：
 
@@ -5099,7 +5099,7 @@ arg : 通过第三个参数传递的调用函数时包含传递参数信息的�
 
 下面通过简单示例了解该函数功能：
 
-- [thread1.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/thread1.c)
+- [thread1.c](ch18/thread1.c)
 
 ```c
 #include <stdio.h>
@@ -5165,7 +5165,7 @@ status : 保存线程的 main 函数返回值的指针的变量地址值
 
 作用就是调用该函数的进程（或线程）将进入等待状态，直到第一个参数为 ID 的线程终止为止。而且可以得到线程的 main 函数的返回值。下面是该函数的用法代码：
 
-- [thread2.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/thread2.c)
+- [thread2.c](ch18/thread2.c)
 
 ```c
 #include <stdio.h>
@@ -5278,7 +5278,7 @@ gcc -D_REENTRANT mythread.c -o mthread -lpthread
 
 下面是代码：
 
-- [thread3.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/thread3.c)
+- [thread3.c](ch18/thread3.c)
 
 ```c
 #include <stdio.h>
@@ -5328,7 +5328,7 @@ gcc thread3.c -D_REENTRANT -o tr3 -lpthread
 
 但是本例子本身存在问题。存在临界区相关问题，可以从下面的代码看出，下面的代码和上面的代码相似，只是增加了发生临界区错误的可能性，即使在高配置系统环境下也容易产生的错误：
 
-- [thread4.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/thread4.c)
+- [thread4.c](ch18/thread4.c)
 
 ```c
 #include <stdio.h>
@@ -5393,11 +5393,11 @@ gcc thread4.c -D_REENTRANT -o tr4 -lpthread
 
 ### 18.3 线程存在的问题和临界区
 
-下面分析 [thread4.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/thread4.c) 中产生问题的原因，并给出解决方案。
+下面分析 [thread4.c](ch18/thread4.c) 中产生问题的原因，并给出解决方案。
 
 #### 18.3.1 多个线程访问同一变量是问题
 
- [thread4.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/thread4.c) 的问题如下：
+ [thread4.c](ch18/thread4.c) 的问题如下：
 
 > 2 个线程正在同时访问全局变量 num
 
@@ -5510,9 +5510,9 @@ pthread_mutex_lock(&mutex);
 pthread_mutex_unlock(&mutex);
 ```
 
-简言之，就是利用 lock 和 unlock 函数围住临界区的两端。此时互斥量相当于一把锁，阻止多个线程同时访问，还有一点要注意，线程退出临界区时，如果忘了调用 pthread_mutex_unlock 函数，那么其他为了进入临界区而调用 pthread_mutex_lock 的函数无法摆脱阻塞状态。这种情况称为「死锁」。需要格外注意，下面是利用互斥量解决示例 [thread4.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/thread4.c) 中遇到的问题代码：
+简言之，就是利用 lock 和 unlock 函数围住临界区的两端。此时互斥量相当于一把锁，阻止多个线程同时访问，还有一点要注意，线程退出临界区时，如果忘了调用 pthread_mutex_unlock 函数，那么其他为了进入临界区而调用 pthread_mutex_lock 的函数无法摆脱阻塞状态。这种情况称为「死锁」。需要格外注意，下面是利用互斥量解决示例 [thread4.c](ch18/thread4.c) 中遇到的问题代码：
 
-- [mutex.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/mutex.c)
+- [mutex.c](ch18/mutex.c)
 
 ```c
 #include <stdio.h>
@@ -5650,7 +5650,7 @@ sem_post(&sem);//信号量变为 1...
 
 下面是代码：
 
-- [semaphore.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/semaphore.c)
+- [semaphore.c](ch18/semaphore.c)
 
 ```c
 #include <stdio.h>
@@ -5750,8 +5750,8 @@ thread : 终止的同时需要销毁的线程 ID
 
 下面是多个客户端之间可以交换信息的简单聊天程序。
 
-- [chat_server.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/chat_server.c)
-- [chat_clnt.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch18/chat_clnt.c)
+- [chat_server.c](ch18/chat_server.c)
+- [chat_clnt.c](ch18/chat_clnt.c)
 
 上面的服务端示例中，需要掌握临界区的构成，访问全局变量 clnt_cnt 和数组 clnt_socks 的代码将构成临界区，添加和删除客户端时，变量 clnt_cnt 和数组 clnt_socks 将同时发生变化。因此下列情形会导致数据不一致，从而引发错误：
 
@@ -5879,7 +5879,7 @@ web服务器端就是要基于 HTTP 协议，将网页对应文件传输给客�
 
 下面是代码：
 
-- [webserv_linux.c](https://github.com/riba2534/TCP-IP-NetworkNote/blob/master/ch24/webserv_linux.c)
+- [webserv_linux.c](ch24/webserv_linux.c)
 
 ```c
 #include <stdio.h>
